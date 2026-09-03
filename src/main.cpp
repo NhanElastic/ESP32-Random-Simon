@@ -1,28 +1,13 @@
 #include <Arduino.h>
+#include "game/SimonGame.h"
 
-#define BUTTION 4
-#define LED 5
-
-bool buttonState;
+SimonGame game;
 
 void setup() {
   Serial.begin(9600);
-  pinMode(LED, OUTPUT);
-  pinMode(BUTTION, INPUT);
-
-  digitalWrite(LED, LOW);
-
-
+  game.start();
 }
 
 void loop() {
-  buttonState = digitalRead(BUTTION);
-
-  if(buttonState == HIGH) {
-    Serial.println("LED ON");
-    digitalWrite(LED, HIGH);
-  } else {
-    Serial.println("LED OFF");
-    digitalWrite(LED, LOW);
-  }
+  game.update();
 }
