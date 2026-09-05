@@ -10,9 +10,9 @@ constexpr int LED_PINS[PINS_COUNT] = {
 };
 
 constexpr int BUTTON_PINS[PINS_COUNT] = {
-    18, // Red
-    19, // Green
-    21, // Blue
-    22  // Yellow
+    4,  // Red
+    5,  // Green
+    16, // Blue
+    25  // Yellow
 };
 

@@ -5,6 +5,9 @@
 void SimonGame::start() {
     buttons.begin();
     leds.begin();
+    display.begin();
+
+    display.showWelcome();
 }
 
 void SimonGame::generateSequence() {
@@ -12,6 +15,12 @@ void SimonGame::generateSequence() {
 }
 
 void SimonGame::showSequence() {
+    display.showLevel(level);
+    delay(700);
+
+    display.showWatch();
+    delay(500);
+
     for (int i = 0; i < level; ++i) {
         int ledIndex = sequences[i];
 
@@ -21,6 +30,8 @@ void SimonGame::showSequence() {
         leds.turnOff(ledIndex);
         delay(200);
     }
+
+    display.showYourTurn();
 }
 
 void SimonGame::nextLevel() {
@@ -44,6 +55,8 @@ void SimonGame::gameOver() {
         delay(200);
     }
 
+    display.showGameOver(level - 1);
+
     state = GameState::GAME_OVER;
 }
 
@@ -52,6 +65,10 @@ void SimonGame::handlePlayerInput() {
 
     if (button == -1)
         return;
+
+    leds.turnOn(button);
+    delay(200);
+    leds.turnOff(button);
 
     if (button != sequences[inputIndex]) {
         gameOver();
