@@ -3,6 +3,7 @@
 #include "GameState.h"
 #include "../hardware/Buttons/ButtonManager.h"
 #include "../hardware/LED/LedManager.h"
+#include "../hardware/Display/DisplayManager.h"
 #include "../utils/SequenceGenerator.h"
 
 class SimonGame {
@@ -12,14 +13,16 @@ class SimonGame {
         int sequences[MAX_LEVEL];
 
         GameState state = GameState::START;
+
         ButtonManager buttons;
         LedManager leds;
+        DisplayManager display;
         SequenceGenerator generator;
 
         void generateSequence();
         void handlePlayerInput();
         void showSequence();
-        
+
         void nextLevel();
         void gameOver();
 
