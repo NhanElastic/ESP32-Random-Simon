@@ -6,5 +6,6 @@ enum class GameState {
     SHOW_SEQUENCE,
     WAITING_INPUT,
     LEVEL_COMPLETE,
-    GAME_OVER
+    GAME_OVER,
+    WAITING_RESTART
 };
