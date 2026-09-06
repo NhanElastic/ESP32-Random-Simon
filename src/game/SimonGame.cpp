@@ -4,7 +4,7 @@
 
 SimonGame::SimonGame() : playerInput(buttons, leds), sequencePresenter(leds, display) {}
 
-void SimonGame::start() {
+void SimonGame::begin() {
     buttons.begin();
     leds.begin();
     display.begin();
@@ -36,7 +36,7 @@ void SimonGame::startGameOver() {
 bool SimonGame::updateGameOver() {
     unsigned long now = millis();
 
-    if (now - gameOverMillis < 200) return false; 
+    if (now - gameOverMillis < GAME_OVER_BLINK_DURATION) return false; 
 
     gameOverMillis = now;
     
@@ -48,7 +48,7 @@ bool SimonGame::updateGameOver() {
     
     ++gameOverBlink;
 
-    if (gameOverBlink >= 5) {
+    if (gameOverBlink >= GAME_OVER_BLINK_COUNT) {
         display.showGameOver(level - 1);
         return true;
     }
@@ -77,11 +77,7 @@ void SimonGame::update() {
 
             generateSequence();
 
-            sequencePresenter.begin(
-                sequences, 
-                level,
-                level
-            );
+            sequencePresenter.begin(sequences, level);
 
             state = GameState::SHOW_SEQUENCE;
             break;

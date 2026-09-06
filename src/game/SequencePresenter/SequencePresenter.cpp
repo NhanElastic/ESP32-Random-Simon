@@ -7,13 +7,9 @@ SequencePresenter::SequencePresenter(
     DisplayManager& display
 ) : leds(leds), display(display) {}
 
-void SequencePresenter::begin(
-    const int* sequence,
-    int length,
-    int level
-) {
+void SequencePresenter::begin(const int* sequence, int level) {
     this->sequence = sequence;
-    this->length = length;
+    this->length = level;
 
     index = 0;
 

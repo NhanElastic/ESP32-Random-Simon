@@ -14,7 +14,10 @@ class SimonGame {
         int gameOverBlink = 0;
         bool gameOverLedOn = false;
         bool gameOverStarted = false;
-        
+
+        static constexpr unsigned long GAME_OVER_BLINK_DURATION = 200;
+        static constexpr int GAME_OVER_BLINK_COUNT = 5;
+
         void startGameOver();
         bool updateGameOver();
 
@@ -35,10 +38,8 @@ class SimonGame {
         void generateSequence();
 
         void nextLevel();
-        void gameOver();
-
     public:
         SimonGame();
-        void start();
+        void begin();
         void update();
 };

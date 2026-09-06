@@ -33,6 +33,6 @@ class SequencePresenter {
     public:
         SequencePresenter(LedManager& leds, DisplayManager& display);
 
-        void begin(const int* sequence, int length, int level);
+        void begin(const int* sequence, int level);
         bool update();
 };

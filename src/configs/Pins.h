@@ -16,3 +16,6 @@ constexpr int BUTTON_PINS[PINS_COUNT] = {
     25  // Yellow
 };
 
+constexpr int SDA_PIN = 21;
+constexpr int SCL_PIN = 22;
+

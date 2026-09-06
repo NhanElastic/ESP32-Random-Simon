@@ -17,7 +17,7 @@ class PlayerInput {
             FEEDBACK
         };
 
-        static constexpr long FEEDBACK_TIME = 200;
+        static constexpr unsigned long FEEDBACK_TIME = 200;
 
         PlayerInputState state = PlayerInputState::WAITING_BUTTONS;
         ButtonManager& buttons;
@@ -30,7 +30,6 @@ class PlayerInput {
 
         int currentButton = -1;
 
-        bool waitingFeedback = false;
         unsigned long lastTime = 0;
 
     public:
