@@ -5,7 +5,7 @@ SimonGame game;
 
 void setup() {
   Serial.begin(9600);
-  game.start();
+  game.begin();
 }
 
 void loop() {

@@ -1,5 +1,6 @@
 #include "DisplayManager.h"
 #include <Wire.h>
+#include "../../configs/Pins.h"
 
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
@@ -10,7 +11,7 @@ DisplayManager::DisplayManager()
     : display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET) {}
 
 void DisplayManager::begin() {
-    Wire.begin(21, 22);
+    Wire.begin(SDA_PIN, SCL_PIN);   
 
     display.begin(
         SSD1306_SWITCHCAPVCC,
