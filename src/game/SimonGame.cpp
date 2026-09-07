@@ -41,9 +41,9 @@ bool SimonGame::updateGameOver() {
     gameOverMillis = now;
     
     if (gameOverLedOn) {
-            leds.turnOffAll();
-            gameOverLedOn = false;
-            return false;
+        leds.turnOffAll();
+        gameOverLedOn = false;
+        return false;
     }
     
     ++gameOverBlink;
@@ -61,8 +61,7 @@ bool SimonGame::updateGameOver() {
 }
 
 void SimonGame::update() {
-    switch (state)
-    {
+    switch (state) {
         case GameState::START:
             level = 1;
 

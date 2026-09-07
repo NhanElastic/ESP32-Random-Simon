@@ -14,7 +14,7 @@ void PlayerInput::begin(
     index = 0;
     currentButton = -1;
     state = PlayerInputState::WAITING_BUTTONS;
-};
+}
 
 InputResult PlayerInput::update() {
     unsigned long now = millis();
