@@ -10,16 +10,16 @@
 
 class SimonGame {
     private:
-        unsigned long gameOverMillis = 0;
-        int gameOverBlink = 0;
-        bool gameOverLedOn = false;
-        bool gameOverStarted = false;
+        unsigned long endGameMillis = 0;
+        int endGameBlink = 0;
+        bool endGameLedOn = false;
+        bool endGameStarted = false;
 
-        static constexpr unsigned long GAME_OVER_BLINK_DURATION = 200;
-        static constexpr int GAME_OVER_BLINK_COUNT = 5;
+        static constexpr unsigned long END_GAME_BLINK_DURATION = 200;
+        static constexpr int END_GAME_BLINK_COUNT = 5;
 
-        void startGameOver();
-        bool updateGameOver();
+        void startEndGame();
+        bool updateEndGame();
 
         static constexpr int MAX_LEVEL = 100;
 
@@ -27,6 +27,7 @@ class SimonGame {
         int level = 1;
 
         GameState state = GameState::START;
+        GameResult gameResult = GameResult::NONE;
 
         ButtonManager buttons;
         LedManager leds;
@@ -36,8 +37,12 @@ class SimonGame {
         SequencePresenter sequencePresenter;
 
         void generateSequence();
+        void startGame();
 
         void nextLevel();
+
+        void showResult();
+
     public:
         SimonGame();
         void begin();

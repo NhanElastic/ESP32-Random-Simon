@@ -17,4 +17,5 @@ class DisplayManager {
         void showWatch();
         void showYourTurn();
         void showGameOver(int score);
+        void showWin();
 };

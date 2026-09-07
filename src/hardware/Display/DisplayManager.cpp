@@ -84,3 +84,13 @@ void DisplayManager::showWatch() {
 
     display.display();
 }
+
+void DisplayManager::showWin() {
+    display.clearDisplay();
+
+    display.setTextSize(2);
+    display.setCursor(25, 25);
+    display.println("YOU WON!");
+
+    display.display();
+}
