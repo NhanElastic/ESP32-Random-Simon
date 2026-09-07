@@ -16,65 +16,87 @@ void SimonGame::generateSequence() {
     generator.generate(sequences, level, PINS_COUNT);
 }
 
+void SimonGame::startGame() {
+    level = 1;
+    gameResult = GameResult::NONE;
+
+    endGameMillis = 0;
+    endGameBlink = 0;
+    endGameLedOn = false;
+    endGameStarted = false;
+
+    leds.turnOffAll();
+    state = GameState::GENERATE_SEQUENCE;
+}
+
 void SimonGame::nextLevel() {
+    if (level >= MAX_LEVEL) {
+        gameResult = GameResult::WIN;
+        state = GameState::END_GAME;
+        return;
+    }
+
     ++level;
 
     state = GameState::GENERATE_SEQUENCE;
 }
 
-void SimonGame::startGameOver() {
-    gameOverBlink = 0;
-    gameOverLedOn = true;
-    gameOverStarted = true;
+void SimonGame::startEndGame() {
+    endGameBlink = 0;
+    endGameLedOn = true;
+    endGameStarted = true;
 
     for (int i = 0; i < PINS_COUNT; ++i) 
         leds.turnOn(i);
 
-    gameOverMillis = millis();
+    endGameMillis = millis();
 }
 
-bool SimonGame::updateGameOver() {
+bool SimonGame::updateEndGame() {
     unsigned long now = millis();
 
-    if (now - gameOverMillis < GAME_OVER_BLINK_DURATION) return false; 
+    if (now - endGameMillis < END_GAME_BLINK_DURATION) return false; 
 
-    gameOverMillis = now;
+    endGameMillis = now;
     
-    if (gameOverLedOn) {
-            leds.turnOffAll();
-            gameOverLedOn = false;
-            return false;
+    if (endGameLedOn) {
+        leds.turnOffAll();
+        endGameLedOn = false;
+        return false;
     }
     
-    ++gameOverBlink;
+    ++endGameBlink;
 
-    if (gameOverBlink >= GAME_OVER_BLINK_COUNT) {
-        display.showGameOver(level - 1);
+    if (endGameBlink >= END_GAME_BLINK_COUNT) {
+        showResult();
         return true;
     }
 
-    for (int i = 0; i < PINS_COUNT; ++i) leds.turnOn(i);
+    for (int i = 0; i < PINS_COUNT; ++i) 
+        leds.turnOn(i);
 
-    gameOverLedOn = true;
+    endGameLedOn = true;
 
     return false;
 }
 
-void SimonGame::update() {
-    switch (state)
-    {
-        case GameState::START:
-            level = 1;
+void SimonGame::showResult() {
+    if (gameResult == GameResult::WIN) {
+        display.showWin();
+        return;
+    }
 
-            state = GameState::GENERATE_SEQUENCE;
+    display.showGameOver(level - 1);
+}
+
+void SimonGame::update() {
+    switch (state) {
+        case GameState::START:
+            if (buttons.getButtonPressed() != -1)
+                startGame();
             break;
 
         case GameState::GENERATE_SEQUENCE:
-            if (level > MAX_LEVEL) {
-                state = GameState::GAME_OVER;
-                break;
-            }
-
             generateSequence();
 
             sequencePresenter.begin(sequences, level);
@@ -97,14 +119,10 @@ void SimonGame::update() {
             InputResult result = playerInput.update();
 
             if (result == InputResult::WRONG) {
-                state = GameState::GAME_OVER;
-                break;
-            }
-
-            if (result == InputResult::COMPLETE) {
+                gameResult = GameResult::LOSE;
+                state = GameState::END_GAME;
+            } else if (result == InputResult::COMPLETE) 
                 state = GameState::LEVEL_COMPLETE;
-                break;
-            }
 
             break;
         }
@@ -113,16 +131,18 @@ void SimonGame::update() {
             nextLevel();
             break;
         
-        case GameState::GAME_OVER:
-            if (!gameOverStarted) startGameOver();
+        case GameState::END_GAME:
+            if (!endGameStarted) startEndGame();
 
-            if (updateGameOver()) {
-                gameOverStarted = false;
+            if (updateEndGame()) {
+                endGameStarted = false;
                 state = GameState::WAITING_RESTART;
             }
             break;
 
         case GameState::WAITING_RESTART:
+            if (buttons.getButtonPressed() != -1)
+                startGame();
             break;
     }
 }
